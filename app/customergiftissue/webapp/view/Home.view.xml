@@ -103,6 +103,7 @@
                                     maxFileSize="5"
                                     multiple="false"
                                     uploadUrl="/odata/v4/gv-tracker/AttachmentSet"
+                                    beforeUploadStarts=".onBeforeUploadStarts"
                                     items="{path: 'uiState>attachments', templateShareable: false}">
                                     <upload:items>
                                         <upload:UploadSetItem fileName="{uiState>fileName}" />

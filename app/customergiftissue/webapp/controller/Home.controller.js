@@ -74,6 +74,16 @@ function (Controller, JSONModel, MessageToast, MessageBox) {
             this.getView().getModel("uiState").refresh();
         },
 
+        onBeforeUploadStarts: function (oEvent) {
+            // OData V4 Media entities usually require a PUT to /content.
+            // For now, we set the Slug header to bypass 415 error and pass the filename.
+            var oCustomerHeaderSlug = new sap.ui.core.Item({
+                key: "Slug",
+                text: oEvent.getParameter("item").getFileName()
+            });
+            oEvent.getParameter("item").addHeaderField(oCustomerHeaderSlug);
+        },
+
         onSubmit: function () {
             var oState = this.getView().getModel("uiState").getData();
             var oPayload = {

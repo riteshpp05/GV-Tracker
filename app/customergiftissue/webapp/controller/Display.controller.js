@@ -12,19 +12,20 @@ sap.ui.define([
 
         _onObjectMatched: function (oEvent) {
             var sGVNo = oEvent.getParameter("arguments").gv_no;
-            // Bind the view to the specific GVHeader record
-            this.getView().bindElement({
-                path: "/GVHeaderSet(gv_no=" + sGVNo + ")", // Assuming we use gv_no as a key or filter
-                parameters: {
-                    $expand: "assignGiftVouchers,returnGiftVouchers,bills"
-                }
+            var oView = this.getView();
+            var oModel = oView.getModel();
+
+            var oListBinding = oModel.bindList("/GVHeaderSet", null, null, [
+                new sap.ui.model.Filter("gv_no", sap.ui.model.FilterOperator.EQ, parseInt(sGVNo))
+            ], {
+                $expand: "assignGiftVouchers,returnGiftVouchers,bills"
             });
-            // Note: OData V4 uses ID as key, so normally it's GVHeaderSet(<UUID>). We'd need to search by gv_no.
-            // For simplicity in this demo, let's assume the router passes the ID.
-            this.getView().bindElement({
-                path: "/GVHeaderSet(" + sGVNo + ")",
-                parameters: {
-                    $expand: "assignGiftVouchers,returnGiftVouchers,bills"
+
+            oListBinding.requestContexts(0, 1).then(function (aContexts) {
+                if (aContexts && aContexts.length > 0) {
+                    oView.setBindingContext(aContexts[0]);
+                } else {
+                    sap.m.MessageBox.error("Transaction not found.");
                 }
             });
         },
