@@ -1,6 +1,86 @@
 <mvc:View controllerName="com.mall.customergiftissue.controller.Home"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="page" title="GV Tracker - Transaction Dashboard">
+        <content>
+            <f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="Transaction Details" columnsL="1" columnsM="1">
+                <f:content>
+                    <Label text="Transaction Type" />
+                    <RadioButtonGroup id="transactionType" select=".onTypeSelect" columns="4">
+                        <RadioButton text="Issue (CI)" customData:key="CI" xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" />
+                        <RadioButton text="Return (RT)" customData:key="RT" xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"/>
+                        <RadioButton text="Replace (RP)" customData:key="RP" xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"/>
+                    </RadioButtonGroup>
+
+                    <Label text="Customer ID" />
+                    <Input value="{uiState>/customer_ID}" placeholder="Enter Customer UUID" />
+
+                    <Label text="Campaign Name" visible="{= ${uiState>/gvr_type_code} === 'CI' }" />
+                    <Input value="{uiState>/campaign_name}" placeholder="Enter Campaign Name" visible="{= ${uiState>/gvr_type_code} === 'CI' }" />
+
+                    <Label text="Employee Code" />
+                    <Input value="{uiState>/employee_code}" placeholder="e.g. EMP9001" />
+
+                </f:content>
+            </f:SimpleForm>
+
+            <Panel headerText="Gift Vouchers to Assign" visible="{= ${uiState>/gvr_type_code} !== 'RT' }">
+                <Table items="{uiState>/assignGiftVouchers}">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Vouchers" />
+                            <ToolbarSpacer />
+                            <Button icon="sap-icon://add" press=".onAddAssignVoucher" />
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column><Text text="Voucher ID" /></Column>
+                        <Column><Text text="Quantity" /></Column>
+                        <Column><Text text="Total Amount" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Input value="{uiState>giftVoucher_ID}" />
+                                <Input value="{uiState>issue_quantity}" type="Number" />
+                                <Input value="{uiState>total_amount}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+            <Panel headerText="Gift Vouchers to Return" visible="{= ${uiState>/gvr_type_code} === 'RT' || ${uiState>/gvr_type_code} === 'RP' }">
+                <Table items="{uiState>/returnGiftVouchers}">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Vouchers" />
+                            <ToolbarSpacer />
+                            <Button icon="sap-icon://add" press=".onAddReturnVoucher" />
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column><Text text="Original Assignment ID" /></Column>
+                        <Column><Text text="Quantity" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Input value="{uiState>RT_Ass_GiftVoucher_ID}" />
+                                <Input value="{uiState>issue_quantity}" type="Number" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="Submit Transaction" type="Emphasized" press=".onSubmit" />
+            </Toolbar>
+        </footer>
     </Page>
 </mvc:View>
