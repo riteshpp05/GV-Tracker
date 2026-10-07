@@ -24,7 +24,18 @@
   "private": true,
   "cds": {
     "requires": {
+      "[development]": {
+        "db": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": "sqlite.db"
+          }
+        }
+      },
       "[production]": {
+        "db": {
+          "kind": "hana"
+        },
         "auth": "xsuaa"
       }
     }
