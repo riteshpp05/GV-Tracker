@@ -91,24 +91,19 @@
                     <columns>
                         <Column><Text text="Bill Number" /></Column>
                         <Column><Text text="Bill Amount" /></Column>
-                        <Column><Text text="Upload Document" /></Column>
+                        <Column><Text text="Attachment" /></Column>
                     </columns>
                     <items>
                         <ColumnListItem>
                             <cells>
                                 <Input value="{uiState>b_no}" />
                                 <Input value="{uiState>b_amount}" type="Number" />
-                                <upload:UploadSet xmlns:upload="sap.m.upload"
-                                    maxFileNameLength="30"
-                                    maxFileSize="5"
-                                    multiple="false"
-                                    uploadUrl="/odata/v4/gv-tracker/AttachmentSet"
-                                    beforeUploadStarts=".onBeforeUploadStarts"
-                                    items="{path: 'uiState>attachments', templateShareable: false}">
-                                    <upload:items>
-                                        <upload:UploadSetItem fileName="{uiState>fileName}" />
-                                    </upload:items>
-                                </upload:UploadSet>
+                                <unified:FileUploader xmlns:unified="sap.ui.unified"
+                                    fileType="pdf,jpg,jpeg,png"
+                                    maximumFileSize="5"
+                                    change=".onFileChange"
+                                    buttonText="Choose File"
+                                    style="Emphasized" />
                             </cells>
                         </ColumnListItem>
                     </items>

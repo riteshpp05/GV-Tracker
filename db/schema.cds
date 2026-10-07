@@ -77,8 +77,10 @@ entity Bill {
 
 entity Attachment {
     key ID          : UUID;
-    @Core.MediaType: contentType
+    @Core.MediaType : contentType
     content         : LargeBinary;
+    @Core.IsMediaType : true
     contentType     : String;
     fileName        : String;
+    size            : Integer;
 }
