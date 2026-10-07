@@ -103,6 +103,9 @@
                                     multiple="false"
                                     uploadUrl="/odata/v4/gv-tracker/AttachmentSet"
                                     items="{path: 'uiState>attachments', templateShareable: false}">
+                                    <upload:items>
+                                        <upload:UploadSetItem fileName="{uiState>fileName}" />
+                                    </upload:items>
                                 </upload:UploadSet>
                             </cells>
                         </ColumnListItem>
