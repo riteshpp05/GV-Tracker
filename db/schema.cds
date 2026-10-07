@@ -10,7 +10,7 @@ entity GiftVoucher {
     coupon       : String(50);
     material     : String(50);
     stock        : Integer;
-    price        : Decimal(10,2);
+    price        : Decimal(15,2);
     brand        : String(100);
     expDate      : Date;
     type         : String(20);
@@ -40,8 +40,8 @@ entity GVHeader {
     campaign_name          : String(100);
     customer_ID            : UUID;
     employee_code          : String(50);
-    assignGiftsTotal_amt   : Decimal(10,2);
-    returnGiftsTotal_amt   : Decimal(10,2);
+    assignGiftsTotal_amt   : Decimal(15,2);
+    returnGiftsTotal_amt   : Decimal(15,2);
     
     // Compositions (Line Items)
     assignGiftVouchers     : Composition of many AssignGiftVoucher on assignGiftVouchers.GVHeader_ID = $self.ID;
@@ -55,7 +55,7 @@ entity AssignGiftVoucher {
     giftVoucher_ID      : UUID;
     issue_quantity      : Integer;
     current_quantity    : Integer;
-    total_amount        : Decimal(10,2);
+    total_amount        : Decimal(15,2);
 }
 
 entity ReturnGiftVoucher {
@@ -63,7 +63,7 @@ entity ReturnGiftVoucher {
     GVHeader_ID                : UUID;
     RT_Ass_GiftVoucher_ID      : UUID;
     issue_quantity             : Integer;
-    total_amount               : Decimal(10,2);
+    total_amount               : Decimal(15,2);
 }
 
 entity Bill {
@@ -71,7 +71,7 @@ entity Bill {
     GVHeader_ID         : UUID;
     sr_no               : Integer;
     b_no                : String(50);
-    b_amount            : Decimal(10,2);
+    b_amount            : Decimal(15,2);
     attachment_ID       : UUID;
 }
 
