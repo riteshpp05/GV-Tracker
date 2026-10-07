@@ -44,6 +44,7 @@
                         <Column><Text text="Voucher ID" /></Column>
                         <Column><Text text="Quantity" /></Column>
                         <Column><Text text="Total Amount" /></Column>
+                        <Column width="3rem" hAlign="Center"><Text text="" /></Column>
                     </columns>
                     <items>
                         <ColumnListItem>
@@ -51,6 +52,7 @@
                                 <Input value="{uiState>giftVoucher_ID}" />
                                 <Input value="{uiState>issue_quantity}" type="Number" />
                                 <Input value="{uiState>total_amount}" />
+                                <Button icon="sap-icon://delete" type="Transparent" press=".onDeleteAssignVoucher" tooltip="Delete row" />
                             </cells>
                         </ColumnListItem>
                     </items>
@@ -69,12 +71,14 @@
                     <columns>
                         <Column><Text text="Original Assignment ID" /></Column>
                         <Column><Text text="Quantity" /></Column>
+                        <Column width="3rem" hAlign="Center"><Text text="" /></Column>
                     </columns>
                     <items>
                         <ColumnListItem>
                             <cells>
                                 <Input value="{uiState>RT_Ass_GiftVoucher_ID}" />
                                 <Input value="{uiState>issue_quantity}" type="Number" />
+                                <Button icon="sap-icon://delete" type="Transparent" press=".onDeleteReturnVoucher" tooltip="Delete row" />
                             </cells>
                         </ColumnListItem>
                     </items>
@@ -93,6 +97,7 @@
                         <Column><Text text="Bill Number" /></Column>
                         <Column><Text text="Bill Amount" /></Column>
                         <Column><Text text="Attachment" /></Column>
+                        <Column width="3rem" hAlign="Center"><Text text="" /></Column>
                     </columns>
                     <items>
                         <ColumnListItem>
@@ -105,6 +110,7 @@
                                     change=".onFileChange"
                                     buttonText="Choose File"
                                     style="Emphasized" />
+                                <Button icon="sap-icon://delete" type="Transparent" press=".onDeleteBill" tooltip="Delete row" />
                             </cells>
                         </ColumnListItem>
                     </items>

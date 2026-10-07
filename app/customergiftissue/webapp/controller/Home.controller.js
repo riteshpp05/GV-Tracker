@@ -74,6 +74,36 @@ function (Controller, JSONModel, MessageToast, MessageBox) {
             this.getView().getModel("uiState").refresh();
         },
 
+        onDeleteAssignVoucher: function (oEvent) {
+            var oItem = oEvent.getSource().getParent();
+            var sPath = oItem.getBindingContext("uiState").getPath();
+            var nIndex = parseInt(sPath.split("/").pop(), 10);
+            var aVouchers = this.getView().getModel("uiState").getProperty("/assignGiftVouchers");
+            aVouchers.splice(nIndex, 1);
+            this.getView().getModel("uiState").refresh();
+        },
+
+        onDeleteReturnVoucher: function (oEvent) {
+            var oItem = oEvent.getSource().getParent();
+            var sPath = oItem.getBindingContext("uiState").getPath();
+            var nIndex = parseInt(sPath.split("/").pop(), 10);
+            var aVouchers = this.getView().getModel("uiState").getProperty("/returnGiftVouchers");
+            aVouchers.splice(nIndex, 1);
+            this.getView().getModel("uiState").refresh();
+        },
+
+        onDeleteBill: function (oEvent) {
+            var oItem = oEvent.getSource().getParent();
+            var sPath = oItem.getBindingContext("uiState").getPath();
+            var nIndex = parseInt(sPath.split("/").pop(), 10);
+            var aBills = this.getView().getModel("uiState").getProperty("/bills");
+            aBills.splice(nIndex, 1);
+            aBills.forEach(function (b, idx) {
+                b.sr_no = idx + 1;
+            });
+            this.getView().getModel("uiState").refresh();
+        },
+
         onFileChange: function (oEvent) {
             // Read the selected file and store its name in the bill's local model
             var oFileUploader = oEvent.getSource();
