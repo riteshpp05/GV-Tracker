@@ -195,8 +195,15 @@ function (Controller, JSONModel, MessageToast, MessageBox) {
             var oContext = oListBinding.create(oPayload);
             
             oContext.created().then(function () {
-                MessageToast.show("Transaction Successful! GV record created.");
-                that.resetModel();
+                var oCreatedData = oContext.getObject();
+                var sGVNo = (oCreatedData && oCreatedData.gv_no) ? oCreatedData.gv_no : "";
+                var sSuccessMsg = "Transaction Successful!" + (sGVNo ? "\n\nGenerated GV Number: " + sGVNo : "");
+                MessageBox.success(sSuccessMsg, {
+                    title: "Transaction Confirmed",
+                    onClose: function () {
+                        that.resetModel();
+                    }
+                });
             }).catch(function (oError) {
                 var sMsg = oError && oError.message ? oError.message : "Error creating transaction.";
                 MessageBox.error(sMsg);
