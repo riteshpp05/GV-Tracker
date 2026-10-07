@@ -78,6 +78,7 @@
                         </ColumnListItem>
                     </items>
                 </Table>
+            </Panel>
             <Panel headerText="Customer Shopping Bills" visible="{= ${uiState>/gvr_type_code} === 'CI' }">
                 <Table items="{uiState>/bills}">
                     <headerToolbar>
