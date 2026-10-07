@@ -1,6 +1,7 @@
 <mvc:View controllerName="com.mall.customergiftissue.controller.AddCustomer"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m">
     <Page id="page" title="Register New Customer" showNavButton="true" navButtonPress=".onNavBack">
         <content>
@@ -20,9 +21,9 @@
 
                     <Label text="Salutation" />
                     <Select selectedKey="{uiState>/salutation}">
-                        <core:Item key="MR" text="Mr." xmlns:core="sap.ui.core" />
-                        <core:Item key="MRS" text="Mrs." xmlns:core="sap.ui.core" />
-                        <core:Item key="MISS" text="Miss." xmlns:core="sap.ui.core" />
+                        <core:Item key="MR" text="Mr." />
+                        <core:Item key="MRS" text="Mrs." />
+                        <core:Item key="MISS" text="Miss." />
                     </Select>
 
                     <Label text="Shopping Mall Plant Code" />

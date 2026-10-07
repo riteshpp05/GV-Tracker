@@ -93,50 +93,83 @@ function (Controller, JSONModel, MessageToast, MessageBox) {
 
             if (oState.gvr_type_code === 'CI') {
                 oPayload.campaign_name = oState.campaign_name;
-                oPayload.assignGiftVouchers = oState.assignGiftVouchers.map(v => ({
-                    giftVoucher_ID: v.giftVoucher_ID,
-                    issue_quantity: parseInt(v.issue_quantity),
-                    total_amount: v.total_amount
-                }));
-                oPayload.bills = oState.bills.map(b => ({
-                    sr_no: b.sr_no,
-                    b_no: b.b_no,
-                    b_amount: b.b_amount
-                }));
+                
+                var nTotalAssign = 0;
+                oPayload.assignGiftVouchers = (oState.assignGiftVouchers || []).map(function (v) {
+                    var nQty = parseInt(v.issue_quantity, 10) || 1;
+                    var nAmt = parseFloat(v.total_amount) || 0;
+                    nTotalAssign += nAmt;
+                    return {
+                        giftVoucher_ID: v.giftVoucher_ID,
+                        issue_quantity: nQty,
+                        total_amount: nAmt.toFixed(2)
+                    };
+                });
+                oPayload.assignGiftsTotal_amt = nTotalAssign.toFixed(2);
+
+                oPayload.bills = (oState.bills || []).map(function (b, idx) {
+                    var nAmt = parseFloat(b.b_amount) || 0;
+                    return {
+                        sr_no: idx + 1,
+                        b_no: b.b_no || ("BILL-" + (idx + 1)),
+                        b_amount: nAmt.toFixed(2)
+                    };
+                });
             } else if (oState.gvr_type_code === 'RT') {
-                oPayload.returnGiftsTotal_amt = "500.00"; // Placeholder
-                oPayload.returnGiftVouchers = oState.returnGiftVouchers.map(v => ({
-                    RT_Ass_GiftVoucher_ID: v.RT_Ass_GiftVoucher_ID,
-                    issue_quantity: parseInt(v.issue_quantity),
-                    total_amount: "500.00"
-                }));
+                var nTotalReturn = 0;
+                oPayload.returnGiftVouchers = (oState.returnGiftVouchers || []).map(function (v) {
+                    var nQty = parseInt(v.issue_quantity, 10) || 1;
+                    var nAmt = parseFloat(v.total_amount) || 500;
+                    nTotalReturn += nAmt;
+                    return {
+                        RT_Ass_GiftVoucher_ID: v.RT_Ass_GiftVoucher_ID,
+                        issue_quantity: nQty,
+                        total_amount: nAmt.toFixed(2)
+                    };
+                });
+                oPayload.returnGiftsTotal_amt = nTotalReturn.toFixed(2);
             } else if (oState.gvr_type_code === 'RP') {
-                // Combine both
-                oPayload.assignGiftsTotal_amt = "500.00";
-                oPayload.returnGiftsTotal_amt = "500.00";
-                oPayload.assignGiftVouchers = oState.assignGiftVouchers.map(v => ({
-                    giftVoucher_ID: v.giftVoucher_ID,
-                    issue_quantity: parseInt(v.issue_quantity),
-                    total_amount: v.total_amount
-                }));
-                oPayload.returnGiftVouchers = oState.returnGiftVouchers.map(v => ({
-                    RT_Ass_GiftVoucher_ID: v.RT_Ass_GiftVoucher_ID,
-                    issue_quantity: parseInt(v.issue_quantity),
-                    total_amount: "500.00"
-                }));
+                var nTotalAssign = 0;
+                var nTotalReturn = 0;
+
+                oPayload.assignGiftVouchers = (oState.assignGiftVouchers || []).map(function (v) {
+                    var nQty = parseInt(v.issue_quantity, 10) || 1;
+                    var nAmt = parseFloat(v.total_amount) || 0;
+                    nTotalAssign += nAmt;
+                    return {
+                        giftVoucher_ID: v.giftVoucher_ID,
+                        issue_quantity: nQty,
+                        total_amount: nAmt.toFixed(2)
+                    };
+                });
+
+                oPayload.returnGiftVouchers = (oState.returnGiftVouchers || []).map(function (v) {
+                    var nQty = parseInt(v.issue_quantity, 10) || 1;
+                    var nAmt = parseFloat(v.total_amount) || 500;
+                    nTotalReturn += nAmt;
+                    return {
+                        RT_Ass_GiftVoucher_ID: v.RT_Ass_GiftVoucher_ID,
+                        issue_quantity: nQty,
+                        total_amount: nAmt.toFixed(2)
+                    };
+                });
+
+                oPayload.assignGiftsTotal_amt = nTotalAssign.toFixed(2);
+                oPayload.returnGiftsTotal_amt = nTotalReturn.toFixed(2);
             }
 
-            var oModel = this.getView().getModel(); // OData V4 Model
+            var oModel = this.getView().getModel();
             var oListBinding = oModel.bindList("/GVHeaderSet");
 
             var that = this;
             var oContext = oListBinding.create(oPayload);
             
             oContext.created().then(function () {
-                MessageToast.show("Transaction Successful!");
+                MessageToast.show("Transaction Successful! GV record created.");
                 that.resetModel();
             }).catch(function (oError) {
-                MessageBox.error(oError.message);
+                var sMsg = oError && oError.message ? oError.message : "Error creating transaction.";
+                MessageBox.error(sMsg);
             });
         }
     });

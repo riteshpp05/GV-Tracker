@@ -1,6 +1,7 @@
 <mvc:View controllerName="com.mall.customergiftissue.controller.Home"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:f="sap.ui.layout.form"
+    xmlns:unified="sap.ui.unified"
     xmlns="sap.m"
     xmlns:core="sap.ui.core">
     <Page id="page" title="GV Tracker - Transaction Dashboard">
@@ -98,7 +99,7 @@
                             <cells>
                                 <Input value="{uiState>b_no}" />
                                 <Input value="{uiState>b_amount}" type="Number" />
-                                <unified:FileUploader xmlns:unified="sap.ui.unified"
+                                <unified:FileUploader
                                     fileType="pdf,jpg,jpeg,png"
                                     maximumFileSize="5"
                                     change=".onFileChange"
