@@ -24,12 +24,10 @@
   "private": true,
   "cds": {
     "requires": {
-      "[development]": {
-        "db": {
-          "kind": "sqlite",
-          "credentials": {
-            "url": "sqlite.db"
-          }
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
         }
       },
       "[production]": {
