@@ -1,0 +1,40 @@
+<mvc:View controllerName="com.mall.customergiftissue.controller.AddCustomer"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+    <Page id="page" title="Register New Customer" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            <f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="Customer Profile" columnsL="1" columnsM="1">
+                <f:content>
+                    <Label text="Name" />
+                    <Input value="{uiState>/name}" placeholder="Full Name" />
+
+                    <Label text="Email" />
+                    <Input value="{uiState>/email}" placeholder="Email Address" type="Email" />
+
+                    <Label text="Phone Code &amp; Number" />
+                    <HBox>
+                        <Input value="{uiState>/phoneCode}" placeholder="+91" width="5em" class="sapUiTinyMarginEnd" />
+                        <Input value="{uiState>/phone}" placeholder="Phone Number" type="Tel" />
+                    </HBox>
+
+                    <Label text="Salutation" />
+                    <Select selectedKey="{uiState>/salutation}">
+                        <core:Item key="MR" text="Mr." xmlns:core="sap.ui.core" />
+                        <core:Item key="MRS" text="Mrs." xmlns:core="sap.ui.core" />
+                        <core:Item key="MISS" text="Miss." xmlns:core="sap.ui.core" />
+                    </Select>
+
+                    <Label text="Shopping Mall Plant Code" />
+                    <Input value="{uiState>/shoppingMall_ID}" placeholder="e.g. 8208" />
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="Register" type="Emphasized" press=".onSubmit" />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

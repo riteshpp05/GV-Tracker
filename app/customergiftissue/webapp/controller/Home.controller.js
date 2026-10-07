@@ -18,10 +18,24 @@ function (Controller, JSONModel, MessageToast, MessageBox) {
                 customer_ID: "20000000-0000-0000-0000-000000000001",
                 campaign_name: "Diwali_Fest_2026",
                 employee_code: "EMP9001",
+                bills: [],
                 assignGiftVouchers: [],
                 returnGiftVouchers: []
             };
             this.getView().setModel(new JSONModel(oData), "uiState");
+        },
+
+        onNavToAddCustomer: function () {
+            this.getOwnerComponent().getRouter().navTo("RouteAddCustomer");
+        },
+
+        onNavToDisplay: function () {
+            // Hardcoded prompt or value for demo purposes. 
+            // In a real app, you'd have a dialog to input GV Number.
+            var sGVNo = prompt("Enter GV Number to display (e.g. 10000001):", "10000001");
+            if (sGVNo) {
+                this.getOwnerComponent().getRouter().navTo("RouteDisplay", { gv_no: sGVNo });
+            }
         },
 
         onTypeSelect: function (oEvent) {
@@ -49,6 +63,17 @@ function (Controller, JSONModel, MessageToast, MessageBox) {
             this.getView().getModel("uiState").refresh();
         },
 
+        onAddBill: function () {
+            var aBills = this.getView().getModel("uiState").getProperty("/bills");
+            aBills.push({
+                sr_no: aBills.length + 1,
+                b_no: "",
+                b_amount: "0.00",
+                attachments: []
+            });
+            this.getView().getModel("uiState").refresh();
+        },
+
         onSubmit: function () {
             var oState = this.getView().getModel("uiState").getData();
             var oPayload = {
@@ -63,6 +88,11 @@ function (Controller, JSONModel, MessageToast, MessageBox) {
                     giftVoucher_ID: v.giftVoucher_ID,
                     issue_quantity: parseInt(v.issue_quantity),
                     total_amount: v.total_amount
+                }));
+                oPayload.bills = oState.bills.map(b => ({
+                    sr_no: b.sr_no,
+                    b_no: b.b_no,
+                    b_amount: b.b_amount
                 }));
             } else if (oState.gvr_type_code === 'RT') {
                 oPayload.returnGiftsTotal_amt = "500.00"; // Placeholder

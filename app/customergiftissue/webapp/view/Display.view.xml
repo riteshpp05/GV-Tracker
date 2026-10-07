@@ -1,0 +1,77 @@
+<mvc:View controllerName="com.mall.customergiftissue.controller.Display"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+    <Page id="page" title="Display Transaction" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            <f:SimpleForm editable="false" layout="ResponsiveGridLayout" title="Transaction Details" columnsL="1" columnsM="1">
+                <f:content>
+                    <Label text="Transaction Type" />
+                    <Text text="{gvr_type_code}" />
+
+                    <Label text="Customer ID" />
+                    <Text text="{customer_ID}" />
+
+                    <Label text="Campaign Name" />
+                    <Text text="{campaign_name}" />
+
+                    <Label text="Employee Code" />
+                    <Text text="{employee_code}" />
+                </f:content>
+            </f:SimpleForm>
+
+            <Panel headerText="Assigned Vouchers">
+                <Table items="{assignGiftVouchers}">
+                    <columns>
+                        <Column><Text text="Voucher ID" /></Column>
+                        <Column><Text text="Quantity" /></Column>
+                        <Column><Text text="Total Amount" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{giftVoucher_ID}" />
+                                <Text text="{issue_quantity}" />
+                                <Text text="{total_amount}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+            <Panel headerText="Returned Vouchers">
+                <Table items="{returnGiftVouchers}">
+                    <columns>
+                        <Column><Text text="Original Assignment ID" /></Column>
+                        <Column><Text text="Quantity" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{RT_Ass_GiftVoucher_ID}" />
+                                <Text text="{issue_quantity}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+            
+            <Panel headerText="Bills">
+                <Table items="{bills}">
+                    <columns>
+                        <Column><Text text="Bill No" /></Column>
+                        <Column><Text text="Amount" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{b_no}" />
+                                <Text text="{b_amount}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+        </content>
+    </Page>
+</mvc:View>

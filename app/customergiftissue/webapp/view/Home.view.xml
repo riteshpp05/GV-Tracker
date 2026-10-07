@@ -4,6 +4,10 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core">
     <Page id="page" title="GV Tracker - Transaction Dashboard">
+        <headerContent>
+            <Button text="Register Customer" press=".onNavToAddCustomer" />
+            <Button text="Display Transaction" press=".onNavToDisplay" />
+        </headerContent>
         <content>
             <f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="Transaction Details" columnsL="1" columnsM="1">
                 <f:content>
@@ -70,6 +74,36 @@
                             <cells>
                                 <Input value="{uiState>RT_Ass_GiftVoucher_ID}" />
                                 <Input value="{uiState>issue_quantity}" type="Number" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            <Panel headerText="Customer Shopping Bills" visible="{= ${uiState>/gvr_type_code} === 'CI' }">
+                <Table items="{uiState>/bills}">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Bills" />
+                            <ToolbarSpacer />
+                            <Button icon="sap-icon://add" press=".onAddBill" />
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column><Text text="Bill Number" /></Column>
+                        <Column><Text text="Bill Amount" /></Column>
+                        <Column><Text text="Upload Document" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Input value="{uiState>b_no}" />
+                                <Input value="{uiState>b_amount}" type="Number" />
+                                <upload:UploadSet xmlns:upload="sap.m.upload"
+                                    maxFileNameLength="30"
+                                    maxFileSize="5"
+                                    multiple="false"
+                                    uploadUrl="/odata/v4/gv-tracker/AttachmentSet"
+                                    items="{path: 'uiState>attachments', templateShareable: false}">
+                                </upload:UploadSet>
                             </cells>
                         </ColumnListItem>
                     </items>

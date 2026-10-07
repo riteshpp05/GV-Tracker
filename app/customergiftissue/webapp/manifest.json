@@ -98,12 +98,34 @@
           "target": [
             "TargetHome"
           ]
+        },
+        {
+          "name": "RouteDisplay",
+          "pattern": "display/{gv_no}",
+          "target": [
+            "TargetDisplay"
+          ]
+        },
+        {
+          "name": "RouteAddCustomer",
+          "pattern": "addCustomer",
+          "target": [
+            "TargetAddCustomer"
+          ]
         }
       ],
       "targets": {
         "TargetHome": {
           "id": "Home",
           "name": "Home"
+        },
+        "TargetDisplay": {
+          "id": "Display",
+          "name": "Display"
+        },
+        "TargetAddCustomer": {
+          "id": "AddCustomer",
+          "name": "AddCustomer"
         }
       }
     },
