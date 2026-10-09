@@ -18,6 +18,7 @@ modules:
     instances: 1
   build-parameters:
     builder: npm-ci
+
 - name: GVTrackerCAPM-db-deployer
   type: hdb
   path: gen/db
@@ -25,6 +26,24 @@ modules:
   - name: GVTrackerCAPM-db
   parameters:
     buildpack: nodejs_buildpack
+
+- name: GVTrackerCAPM-approuter
+  type: approuter.nodejs
+  path: app/router
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+  requires:
+  - name: GVTrackerCAPM-auth
+  - name: GVTrackerCAPM-html5-runtime
+  - name: GVTrackerCAPM-destination-service
+  - name: srv-api
+    group: destinations
+    properties:
+      name: srv-api
+      url: ~{srv-url}
+      forwardAuthToken: false
+
 - name: GVTrackerCAPM-app-content
   type: com.sap.application.content
   path: .
@@ -39,6 +58,7 @@ modules:
       - commallcustomergiftissue.zip
       name: commallcustomergiftissue
       target-path: resources/
+
 - name: commallcustomergiftissue
   type: html5
   path: app/customergiftissue
@@ -49,12 +69,14 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+
 resources:
 - name: GVTrackerCAPM-db
   type: com.sap.xs.hdi-container
   parameters:
     service: hana
     service-plan: hdi-shared
+
 - name: GVTrackerCAPM-auth
   type: org.cloudfoundry.managed-service
   parameters:
@@ -68,17 +90,28 @@ resources:
     path: ./xs-security.json
     service: xsuaa
     service-plan: application
+
 - name: GVTrackerCAPM-repo-host
   type: org.cloudfoundry.managed-service
   parameters:
     service: html5-apps-repo
     service-name: GVTrackerCAPM-html5-service
     service-plan: app-host
-- name: GVTrackerCAPM-destination-service
+
+- name: GVTrackerCAPM-html5-runtime
   type: org.cloudfoundry.managed-service
   parameters:
+    service: html5-apps-repo
+    service-name: GVTrackerCAPM-html5-runtime
+    service-plan: app-runtime
+
+- name: GVTrackerCAPM-destination-service
+  type: org.cloudfoundry.managed-service
+  requires:
+  - name: srv-api
+  parameters:
     config:
-      HTML5Runtime_enabled: false
+      HTML5Runtime_enabled: true
       init_data:
         instance:
           destinations:
@@ -87,14 +120,21 @@ resources:
             ProxyType: Internet
             Type: HTTP
             URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            Name: srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-url}
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
     service-name: GVTrackerCAPM-destination-service
     service-plan: lite
+
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
+
 build-parameters:
   before-all:
   - builder: custom
