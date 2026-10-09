@@ -29,7 +29,7 @@ modules:
 
 - name: GVTrackerCAPM-approuter
   type: approuter.nodejs
-  path: app/router
+  path: router
   parameters:
     disk-quota: 256M
     memory: 256M
@@ -139,5 +139,5 @@ build-parameters:
   before-all:
   - builder: custom
     commands:
-    - npm ci
+    - npm install
     - npx cds build --production
